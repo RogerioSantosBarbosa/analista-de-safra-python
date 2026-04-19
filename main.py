@@ -1,31 +1,37 @@
-#Rosolução
-MEDIA_REFERENCIA = (150.172) # "Constantes" em Python são convencionalmente escritas em maiúsculas, utilizei uma tupla para garantir a imutabilidade do valor
+import pandas as pd
+from flask import Flask, jsonify
 
-safras = {
-    "2023": 180.421,
-    "2024": 200.797,
-    "2025": 190.464
-}
-soma_total = 0
+# Inicializando o servidor
+app = Flask(__name__)
 
-for valor in safras.values():
-    soma_total += valor
+# Criando a "porta de atendimento" (Rota da API)
+@app.route('/api/laudo', methods=['GET'])
+def gerar_laudo():
+    tabela = pd.read_csv("dados_safra.csv")
+    MEDIA_SAFRA_REFERENCIA = (150.00)
 
-media = soma_total / len(safras)
+    # 1. FILTRO E CÁLCULO
+    tabela_filtrada = tabela[tabela['cultura'] == 'Milho']
+    media = tabela_filtrada['producao_ton'].mean()
 
-# 1. FORMATANDO O LAUDO FINAL PARA O USUÁRIO
+    # 2. REGRA DE NEGÓCIO
+    if media >= MEDIA_SAFRA_REFERENCIA:
+        diagnostico = "Produtividade satisfatória. O solo mantém bons índices de rendimento."
+    else:
+        diagnostico = "Atenção! Produtividade abaixo do limiar aceitável. Recomenda-se iniciar a análise para rotação de culturas."
 
-print("--- LAUDO DE SAFRA ---\n")
-print(f"Período analisado: {len(safras)} anos")
-print(f"Média de produtividade: {media:.2f} toneladas")
-print(f"Meta de referência: {MEDIA_REFERENCIA} toneladas\n")
+    # 3. EMPACOTANDO A RESPOSTA NO FORMATO QUE ROBÔS LEEM (JSON/DICIONÁRIO)
+    resposta = {
+        "cultura": "Milho",
+        "periodo_analisado_anos": len(tabela_filtrada),
+        "media_toneladas": round(media, 2),
+        "meta_referencia": MEDIA_SAFRA_REFERENCIA,
+        "diagnostico": diagnostico
+    }
 
-# 2. FILTRO DE ANÁLISE DA PRODUTIVIDADE DA CULTURA
+    # 4. DEVOLVENDO O PACOTE PARA QUEM PEDIU
+    return jsonify(resposta)
 
-if media >= MEDIA_REFERENCIA:
-    print(f"Diagnóstico: Produtividade satisfatória. O solo mantém bons índices de rendimento.")
-
-else:
-    print(f"Diagnóstico: Atenção: Produtividade abaixo do limiar aceitável. Recomenda-se iniciar a naálise para rotação de culturas.")
-
-
+# Ligando o motor
+if __name__ == '__main__':
+    app.run(debug=True)
