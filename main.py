@@ -1,11 +1,19 @@
 import pandas as pd
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from sklearn.linear_model import LinearRegression # MUDANÇA 1: Importamos o "cérebro" do Scikit-Learn para dentro do servidor web
 
 app = Flask(__name__)
 
-@app.route('/api/previsao/<nome_cultura>/<float:solo_n>/<float:chuva_mm>', methods=['GET'])
+@app.route('/')
+def exibir_vitrine():
+    return render_template('index.html')
+
+# Tiramos o "float" da URL. Agora o Flask aceita "321" ou "321.0"
+@app.route('/api/previsao/<nome_cultura>/<solo_n>/<chuva_mm>', methods=['GET'])
 def prever_safra(nome_cultura, solo_n, chuva_mm):
+
+    solo_n = float(solo_n)
+    chuva_mm = float(chuva_mm)
 
     # --- PASSO 1: ENGENHARIA DE DADOS (ETL) ---
     tabela = pd.read_csv("dados_safra.csv")

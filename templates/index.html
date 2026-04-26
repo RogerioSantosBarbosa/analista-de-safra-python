@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>IA Agrícola</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e9ecef; display: flex; justify-content: center; padding-top: 50px; }
+        .cartao { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h2 { color: #343a40; text-align: center; margin-top: 0; }
+        label { font-weight: bold; color: #495057; display: block; margin-top: 15px; }
+        input, select, button { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ced4da; box-sizing: border-box; }
+        button { background-color: #28a745; color: white; border: none; cursor: pointer; font-weight: bold; margin-top: 20px; font-size: 16px; }
+        button:hover { background-color: #218838; }
+        #caixa_resultado { margin-top: 20px; padding: 15px; border-radius: 5px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="cartao">
+        <h2>Previsão de Safra com IA</h2>
+        
+        <label>Cultura Analisada:</label>
+        <select id="cultura_input">
+            <option value="Milho">Milho</option>
+            <option value="Soja">Soja</option>
+        </select>
+
+        <label>Índice de Nitrogênio (ex: 41.5):</label>
+        <input type="number" id="solo_input" step="0.1" value="41.5">
+
+        <label>Previsão de Chuva (mm):</label>
+        <input type="number" id="chuva_input" step="0.1" value="520.0">
+
+        <button onclick="chamarInteligencia()">Consultar IA</button>
+
+        <div id="caixa_resultado"></div>
+    </div>
+
+    <script>
+        function chamarInteligencia() {
+            // 1. Captura o que o usuário digitou nos campos acima
+            let cultura = document.getElementById('cultura_input').value;
+            let solo = document.getElementById('solo_input').value;
+            let chuva = document.getElementById('chuva_input').value;
+
+            // 2. Monta a exata URL que antes nós digitávamos no navegador
+            let url_da_api = `/api/previsao/${cultura}/${solo}/${chuva}`;
+
+            // 3. O "fetch" bate na porta do Flask e pede o JSON
+            fetch(url_da_api)
+                .then(resposta_do_servidor => resposta_do_servidor.json()) // Abre o pacote JSON
+                .then(dados_json => {
+                    // 4. Preenche a tela com os dados
+                    let caixa = document.getElementById('caixa_resultado');
+                    caixa.style.display = 'block'; // Mostra a caixa escondida
+
+                    if(dados_json.erro) {
+                        caixa.style.backgroundColor = '#f8d7da';
+                        caixa.innerHTML = `<b>Erro:</b> ${dados_json.erro}`;
+                    } else {
+                        caixa.style.backgroundColor = '#d4edda';
+                        caixa.innerHTML = `
+                            <b>Diagnóstico:</b> ${dados_json.diagnostico} <br><br>
+                            <b>Volume Previsto:</b> ${dados_json.previsao_toneladas} toneladas
+                        `;
+                    }
+                });
+        }
+    </script>
+</body>
+</html>
