@@ -37,3 +37,32 @@ O projeto é composto pelos seguintes arquivos principais:
 ```bash
 git clone [https://github.com/seu-usuario/analista-de-safra.git](https://github.com/seu-usuario/analista-de-safra.git)
 cd analista-de-safra
+```
+**2. Crie e ative um ambiente virtual (Opcional, mas recomendado):**
+```bash
+python -m venv venv
+# No Windows:
+venv\Scripts\activate
+# No Linux/Mac:
+source venv/bin/activate
+```
+**3. Instale as dependências:**
+Certifique-se de ter o Flask, Pandas e Scikit-Learn instalados:
+```bash
+pip install flask pandas scikit-learn
+```
+**4. Organize o arquivo CSV:**
+Certifique-se de que o arquivo dados_safra.csv esteja na mesma pasta do main.py, formatado corretamente com vírgulas. Exemplo:
+```bash
+ano,cultura,solo_n,chuva_mm,producao_ton
+2018,Milho,30,400,120.5
+2019,Milho,35,450,135.0
+```
+**5. Inicie o servidor Flask:**
+```bash
+python main.py
+```
+**6. Acesse no Navegador:**
+Abra o navegador e acesse http://127.0.0.1:5000 para visualizar a interface web.
+## 🔌 Documentação da API
+O sistema expõe um endpoint GET para consultar previsões via URL ou através de outras aplicações.
