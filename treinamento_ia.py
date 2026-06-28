@@ -1,22 +1,22 @@
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 
-# 1. CARREGAMENTO DOS DADOS
+# PASSO 1: CARREGAMENTO DOS DADOS
 tabela = pd.read_csv("dados_safra.csv")
 tabela_milho = tabela[tabela['cultura'] == 'Milho']
 
-# 2. SEPARAÇÃO DO CÉREBRO (O que é causa e o que é efeito?)
+# PASSO 2: SEPARAÇÃO DO CÉREBRO (O que é causa e o que é efeito)
 # X (Maiúsculo) = As Causas (Características do solo e clima)
 X = tabela_milho[['solo_n', 'chuva_mm']]
 
 # y (minúsculo) = O efeito (O que queremos prever: a colheita)
 y = tabela_milho['producao_ton']
 
-# 3. TREINAMENTO (A hora em que a IA estuda o CSV)
-modelo = LinearRegression() #Criamos um cérebro "em branco"
-modelo.fit(X, y) # Comando fit: "Estude o X e o y e encontre o padrão matemático"
+# PASSO 3: TREINAMENTO (A hora em que a IA estuda o CSV)
+modelo = LinearRegression() # Cria um cérebro "em branco"
+modelo.fit(X, y) 
 
-# 4. A PREVISÃO (O teste no mundo real)
+# PASSO 4: A PREVISÃO 
 # Imagine que o agricultor preencheu o formulário dizendo que o solo hoje tem 41 de Nitrogênio e a previsão é de 520mm de chuva.
 novo_cenario = pd.DataFrame({'solo_n': [41], 'chuva_mm': [520]})
 
