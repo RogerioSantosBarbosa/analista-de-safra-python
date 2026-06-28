@@ -66,3 +66,25 @@ python main.py
 Abra o navegador e acesse http://127.0.0.1:5000 para visualizar a interface web.
 ## 🔌 Documentação da API
 O sistema expõe um endpoint GET para consultar previsões via URL ou através de outras aplicações.
+* **Endpoint:** 
+```bash
+GET /api/previsao/<nome_cultura>/<solo_n>/<chuva_mm>
+```
+* **Exemplo de Requisição:**
+```bash
+http://127.0.0.1:5000/api/previsao/Milho/41.5/520
+```
+* **Exemplo de Resposta (JSON):**
+```bash
+{
+  "cenario_informado": {
+    "nitrogenio_solo": 41.5,
+    "previsao_chuva_mm": 520.0
+  },
+  "cultura": "Milho",
+  "diagnostico": "Previsão Otimista: As condições informadas indicam uma colheita rentável.",
+  "previsao_toneladas": 158.42
+}
+```
+
+Projeto desenvolvido para fins de análise de dados, integração de APIs e aplicação prática de Machine Learning.
