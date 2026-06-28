@@ -26,9 +26,9 @@ def prever_safra(nome_cultura, solo_n, chuva_mm):
     X = tabela_filtrada[['solo_n', 'chuva_mm']]
     y = tabela_filtrada['producao_ton']
 
-    # Instanciamos o modelo a partir da classe
+    # Instancia o modelo a partir da classe
     modelo = LinearRegression()
-    # O modelo estuda os dados do CSV que filtramos
+    # O modelo estuda os dados do CSV 
     modelo.fit(X, y)
 
     # PASSO 3: A PREVISÃO 
