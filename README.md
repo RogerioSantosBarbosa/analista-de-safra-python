@@ -35,7 +35,7 @@ O projeto é composto pelos seguintes arquivos principais:
 
 **1. Clone o repositório e acesse a pasta:**
 ```bash
-git clone [https://github.com/seu-usuario/analista-de-safra.git](https://github.com/seu-usuario/analista-de-safra.git)
+git clone (https://github.com/RogerioSantosBarbosa/analista-de-safra-python.git)
 cd analista-de-safra
 ```
 **2. Crie e ative um ambiente virtual (Opcional, mas recomendado):**
